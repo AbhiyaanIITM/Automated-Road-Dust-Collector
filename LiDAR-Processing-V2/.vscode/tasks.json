@@ -1,0 +1,96 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build All Nodes (Release Mode)",
+            "type": "shell",
+            "command": "bash -c 'source /opt/ros/humble/setup.bash && colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Individual Node/Package (Release Mode)",
+            "type": "shell",
+            "command": "bash -c 'source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select ${input:packageName} --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Individual Node/Package (Debug Mode)",
+            "type": "shell",
+            "command": "bash -c 'source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select ${input:packageName} --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch Processor Node",
+            "type": "shell",
+            "command": "bash -c 'chmod +x ${workspaceFolder}/install/local_setup.bash && source /opt/ros/humble/setup.bash && source ${workspaceFolder}/install/local_setup.bash && ros2 run processor processor --ros-args --params-file ${workspaceFolder}/install/processor/share/processor/config/processor.param.yaml'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch Dataloader Node",
+            "type": "shell",
+            "command": "bash -c 'chmod +x ${workspaceFolder}/install/local_setup.bash && source /opt/ros/humble/setup.bash && source ${workspaceFolder}/install/local_setup.bash && ros2 run dataloader dataloader --ros-args --params-file ${workspaceFolder}/install/dataloader/share/dataloader/config/dataloader.param.yaml'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch RViz2",
+            "type": "shell",
+            "command": "bash -c 'chmod +x ${workspaceFolder}/install/local_setup.bash && source /opt/ros/humble/setup.bash && source ${workspaceFolder}/install/local_setup.bash && ros2 run rviz2 rviz2 --display-config ${workspaceFolder}/src/rviz2_config/config/rviz2_config.rviz'",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Launch All Nodes",
+            "type": "shell",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Launch Processor Node",
+                "Launch Dataloader Node",
+                "Launch RViz2"
+            ]
+        },
+        {
+            "label": "Launch ROS2 Node with GDB",
+            "type": "shell",
+            "command": "chmod +x ${workspaceFolder}/install/local_setup.bash && source /opt/ros/humble/setup.bash && source ${workspaceFolder}/install/local_setup.bash && ros2 run --prefix 'gdb -ex run --args' ${input:packageName} ${input:packageName} --ros-args --params-file ${workspaceFolder}/install/${input:packageName}/share/${input:packageName}/config/${input:packageName}.param.yaml",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "packageName",
+            "description": "Package/Node Name:",
+            "type": "promptString"
+        }
+    ]
+}

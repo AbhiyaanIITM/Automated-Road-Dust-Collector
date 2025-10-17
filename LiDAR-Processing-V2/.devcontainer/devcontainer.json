@@ -1,0 +1,97 @@
+{
+    "name": "LiDAR-Processing-V2",
+    "privileged": true,
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USER_UID": "1000",
+            "USER_GID": "1000"
+        }
+    },
+    "containerEnv": {
+        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        "ROS_DOMAIN_ID": "0"
+    },
+    "runArgs": [
+        // "--gpus",
+        // "all",
+        // "--runtime=nvidia",
+        "--net",
+        "host",
+        "--privileged",
+        "--env=DISPLAY",
+        "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
+    ],
+    "hostRequirements": {
+        "gpu": "optional"
+    },
+    "shutdownAction": "stopContainer",
+    "remoteUser": "devuser",
+    "workspaceFolder": "/home/devuser/workspace/LiDAR-Processing-V2",
+    "mounts": [
+        {
+            "source": "${env:HOME}/workspace",
+            "target": "/home/devuser/workspace",
+            "type": "bind"
+        }
+    ],
+    "postCreateCommand": "bash -c 'source /opt/ros/humble/setup.bash'",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-iot.vscode-ros",
+                "ms-python.black-formatter",
+                "ms-python.vscode-pylance",
+                "ms-python.python",
+                "ms-python.debugpy",
+                "xaver.clang-format",
+                "eamodio.gitlens",
+                "twxs.cmake",
+                "ClemensPeters.format-json",
+                "DavidAnson.vscode-markdownlint",
+                "redhat.vscode-xml",
+                "redhat.vscode-yaml",
+                "mechatroner.rainbow-csv",
+                "llvm-vs-code-extensions.vscode-clangd"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "C_Cpp.clang_format_style": "file",
+                "C_Cpp.default.cppStandard": "c++17",
+                "C_Cpp.default.cStandard": "c11",
+                "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+                "C_Cpp.default.browse.path": [
+                    "${workspaceFolder}"
+                ],
+                "C_Cpp.errorSquiggles": "enabled",
+                "[c]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "xaver.clang-format"
+                },
+                "[cpp]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "xaver.clang-format"
+                },
+                "[python]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "ms-python.black-formatter"
+                },
+                "[yaml]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "redhat.vscode-yaml"
+                },
+                "[json]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "ClemensPeters.format-json"
+                },
+                "[xml]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "redhat.vscode-xml"
+                },
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true,
+                "terminal.integrated.scrollback": 1000
+            }
+        }
+    }
+}
