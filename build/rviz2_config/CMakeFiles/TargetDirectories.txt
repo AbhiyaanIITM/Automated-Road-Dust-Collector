@@ -1,9 +1,0 @@
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/uninstall.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/rviz2_config_uninstall.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/test.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/edit_cache.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/rebuild_cache.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/list_install_components.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/install.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/install/local.dir
-/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/rviz2_config/CMakeFiles/install/strip.dir
