@@ -19,6 +19,13 @@
   <xacro:property name="connecting_rod_x_offset" value="-0.418"/>
   <xacro:property name="castor_wheel_radius" value="0.035"/>
   <xacro:property name="castor_wheel_width" value="0.01867"/>
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:property name="laser_min_range" value="0.1"/>
+  <xacro:property name="laser_max_range" value="200.0"/>
+  <xacro:property name="samples" value="40000"/>
+  <xacro:property name="resolution" value="0.002"/>
+  <xacro:property name="noise_mean" value="0.0"/>
+  <xacro:property name="noise_stddev" value="0.01"/>
 
   <xacro:property name="M_PI" value="3.1415926535897931"/>
 
@@ -79,8 +86,8 @@
   <joint name="left_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin xyz="${wheel_x_offset} ${wheel_y_offset} 0" rpy="0 0 1.57"/>
-    <axis xyz="0 1 0"/>
+    <origin xyz="${wheel_x_offset} -${wheel_y_offset} 0" rpy="0 0 1.57"/>
+    <axis xyz="-1 0 0"/>
   </joint>
 
   <gazebo reference="left_wheel">
@@ -110,8 +117,8 @@
   <joint name="right_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_wheel"/>
-    <origin xyz="${wheel_x_offset} -${wheel_y_offset} 0" rpy="0 0 1.57"/>
-    <axis xyz="0 1 0"/>
+    <origin xyz="${wheel_x_offset} ${wheel_y_offset} 0" rpy="0 0 1.57"/>
+    <axis xyz="-1 0 0"/>
   </joint>
 
   <gazebo reference="right_wheel">
@@ -138,7 +145,7 @@
     </inertial>
   </link>
 
-  <joint name="connecting_rod_joint" type="continuous">
+  <joint name="connecting_rod_joint" type="fixed">
     <parent link="base_link"/>
     <child link="connecting_rod"/>
     <origin xyz="${connecting_rod_x_offset} 0 -${connecting_rod_length/2-0.05}" rpy="0 0 0"/>
@@ -149,17 +156,19 @@
     <material>Gazebo/Silver</material>
   </gazebo>
 
+
   <!-- ============================= -->
   <!-- Castor Wheel -->
   <!-- ============================= -->
+
   <link name="castor_wheel">
     <visual>
-      <geometry><cylinder length="${castor_wheel_width}" radius="${castor_wheel_radius}"/></geometry>
+      <geometry><sphere radius="${castor_wheel_radius}"/></geometry>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
       <material name="black_rubber"/>
     </visual>
     <collision>
-      <geometry><cylinder length="${castor_wheel_width}" radius="${castor_wheel_radius}"/></geometry>
+      <geometry><sphere radius="${castor_wheel_radius}"/></geometry>
       <origin xyz="0 0 0" rpy="0 1.5708 0"/>
     </collision>
     <inertial>
@@ -169,7 +178,7 @@
     </inertial>
   </link>
 
-  <joint name="castor_wheel_joint" type="continuous">
+  <joint name="castor_wheel_joint" type="fixed">
     <parent link="connecting_rod"/>
     <child link="castor_wheel"/>
     <origin xyz="0 0 -${connecting_rod_length/2}" rpy="0 0 1.57"/>
@@ -185,9 +194,9 @@
   <!-- ============================= -->
   
   <link name="base_footprint"/>
-  <joint name="base_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
@@ -223,5 +232,150 @@
     <robot_base_frame>base_link</robot_base_frame>
   </plugin>
   </gazebo>
+
+  <!-- ============================= -->
+  <!-- LIDAR -->
+  <!-- ============================= -->
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+  
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="-0.32 0 0.4" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="lidar_link">
+    <sensor type="gpu_ray" name="lidar-VLP16">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+          <samples>100</samples>
+          <resolution>1</resolution>
+          <min_angle>${0}</min_angle>
+          <max_angle>${2*M_PI}</max_angle>
+          </horizontal>
+          <vertical>
+          <samples>360</samples>
+          <resolution>1</resolution>
+          <min_angle>${-7.22/180*M_PI}</min_angle>
+          <max_angle>${55.22/180*M_PI}</max_angle>
+          </vertical>
+          </scan>
+          <range>
+          <min>${laser_min_range}</min>
+          <max>${laser_max_range}</max>
+          <resolution>${resolution}</resolution>
+          </range>
+          <noise>
+          <type>gaussian</type>
+          <mean>${noise_mean}</mean>
+          <stddev>${noise_stddev}</stddev>
+          </noise>
+      </ray>
+      <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_ray_sensor.so">
+
+      <outputType>sensor_msgs/PointCloud2</outputType>
+      <topicName>Lidar/PointCloud</topicName>
+      <frameName>lidar_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- ============================= -->
+  <!-- Camera -->
+  <!-- ============================= -->
+
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link = "base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="-${base_length/2} 0 ${wheel_radius + base_height}" rpy="0 0.2 3.14"/>
+  </joint>
+
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="camera_link">
+      <update_rate>30.0</update_rate>
+      <camera name="camera">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>1600</width>
+          <height>900</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <camera_name>camera</camera_name>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
 
 </robot>
