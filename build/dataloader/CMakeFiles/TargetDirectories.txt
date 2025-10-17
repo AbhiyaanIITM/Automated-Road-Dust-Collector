@@ -1,0 +1,10 @@
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/uninstall.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/dataloader_uninstall.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/dataloader.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/test.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/edit_cache.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/rebuild_cache.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/list_install_components.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/install.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/install/local.dir
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/dataloader/CMakeFiles/install/strip.dir

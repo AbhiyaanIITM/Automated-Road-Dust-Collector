@@ -1,0 +1,86 @@
+[0.015s] Invoking command in '/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/src/linefit_ground_segmentation_ros2/linefit_ground_segmentation -DCMAKE_INSTALL_PREFIX=/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/linefit_ground_segmentation
+[0.092s] -- The C compiler identification is GNU 11.4.0
+[0.151s] -- The CXX compiler identification is GNU 11.4.0
+[0.158s] -- Detecting C compiler ABI info
+[0.194s] -- Detecting C compiler ABI info - done
+[0.198s] -- Check for working C compiler: /usr/lib/ccache/gcc - skipped
+[0.198s] -- Detecting C compile features
+[0.198s] -- Detecting C compile features - done
+[0.200s] -- Detecting CXX compiler ABI info
+[0.240s] -- Detecting CXX compiler ABI info - done
+[0.244s] -- Check for working CXX compiler: /usr/lib/ccache/g++ - skipped
+[0.244s] -- Detecting CXX compile features
+[0.244s] -- Detecting CXX compile features - done
+[0.245s] -- Found ament_cmake_auto: 1.3.12 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.337s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.488s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.491s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.496s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.502s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.512s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.535s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.537s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[0.548s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[0.554s] -- Looking for pthread.h
+[0.605s] -- Looking for pthread.h - found
+[0.605s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.652s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.653s] -- Found Threads: TRUE  
+[0.728s] -- Checking for module 'eigen3'
+[0.733s] --   Found eigen3, version 3.4.0
+[0.750s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[0.750s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.770s] -- Checking for module 'flann'
+[0.776s] --   Found flann, version 1.9.1
+[0.798s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[0.798s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[1.295s] -- Checking for module 'libusb-1.0'
+[1.304s] --   Found libusb-1.0, version 1.0.25
+[1.324s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[1.324s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.358s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.447s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[1.451s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.455s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[1.547s] -- Found Qhull version 8.0.2
+[1.652s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[1.743s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[1.743s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[1.744s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[1.744s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[1.745s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[1.745s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[1.745s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[1.746s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[1.746s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[1.747s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[1.747s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[1.748s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[1.749s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[1.749s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[1.750s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[1.750s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[1.751s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[1.751s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[1.752s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[1.753s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[1.753s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[1.753s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[1.753s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[1.754s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[1.755s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[1.778s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[1.779s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.779s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.866s] [0mIn this package, headers install destination is set to `include` by ament_auto_package. It is recommended to install `include/linefit_ground_segmentation` instead and will be the default behavior of ament_auto_package from ROS 2 Kilted Kaiju. On distributions before Kilted, ament_auto_package behaves the same way when you use USE_SCOPED_HEADER_INSTALL_DIR option.[0m
+[1.871s] -- Configuring done
+[1.898s] -- Generating done
+[1.904s] -- Build files have been written to: /home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation
+[1.916s] Invoked command in '/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/src/linefit_ground_segmentation_ros2/linefit_ground_segmentation -DCMAKE_INSTALL_PREFIX=/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/linefit_ground_segmentation
+[1.917s] Invoking command in '/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation -- -j20 -l20
+[1.961s] [ 20%] [32mBuilding CXX object CMakeFiles/linefit_ground_segmentation.dir/src/viewer.cc.o[0m
+[1.962s] [ 60%] [32mBuilding CXX object CMakeFiles/linefit_ground_segmentation.dir/src/bin.cc.o[0m
+[1.963s] [ 80%] [32mBuilding CXX object CMakeFiles/linefit_ground_segmentation.dir/src/ground_segmentation.cc.o[0m
+[1.963s] [ 80%] [32mBuilding CXX object CMakeFiles/linefit_ground_segmentation.dir/src/segment.cc.o[0m
+[6.929s] [100%] [32m[1mLinking CXX shared library liblinefit_ground_segmentation.so[0m
+[7.306s] [100%] Built target linefit_ground_segmentation

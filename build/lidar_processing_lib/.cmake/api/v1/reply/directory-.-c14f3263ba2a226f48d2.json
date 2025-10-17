@@ -1,0 +1,105 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 89,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 98,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 115,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 122,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/lidar_processing_lib/lib",
+			"paths" : 
+			[
+				"liblidar_processing_lib.so"
+			],
+			"targetId" : "lidar_processing_lib::@6890427a1f51a3e7e1df",
+			"targetIndex" : 28,
+			"type" : "target"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/lidar_processing_lib/include",
+			"paths" : 
+			[
+				{
+					"from" : "include",
+					"to" : "."
+				}
+			],
+			"type" : "directory"
+		},
+		{
+			"backtrace" : 3,
+			"component" : "Unspecified",
+			"destination" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/lidar_processing_lib/lib/cmake/lidar_processing_lib",
+			"paths" : 
+			[
+				"/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/lidar_processing_lib/lidar_processing_libConfig.cmake",
+				"/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/lidar_processing_lib/lidar_processing_libConfigVersion.cmake"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 4,
+			"component" : "Unspecified",
+			"destination" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/lidar_processing_lib/lib/cmake/lidar_processing_lib",
+			"exportName" : "lidar_processing_libTargets",
+			"exportTargets" : 
+			[
+				{
+					"id" : "lidar_processing_lib::@6890427a1f51a3e7e1df",
+					"index" : 28
+				}
+			],
+			"paths" : 
+			[
+				"CMakeFiles/Export/_home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/lidar_processing_lib/lib/cmake/lidar_processing_lib/lidar_processing_libTargets.cmake"
+			],
+			"type" : "export"
+		}
+	],
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	}
+}

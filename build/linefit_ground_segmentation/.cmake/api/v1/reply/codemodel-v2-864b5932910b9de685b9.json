@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-79f583148f41ac286c79.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "linefit_ground_segmentation",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "headers::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-headers-2c8b371220ed38acc271.json",
+					"name" : "headers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "linefit_ground_segmentation::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-linefit_ground_segmentation-4e2df7660283be03b399.json",
+					"name" : "linefit_ground_segmentation",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "linefit_ground_segmentation_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-linefit_ground_segmentation_uninstall-d9fdba152350a772bc4d.json",
+					"name" : "linefit_ground_segmentation_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-a409a161f73630593878.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/build/linefit_ground_segmentation",
+		"source" : "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/src/linefit_ground_segmentation_ros2/linefit_ground_segmentation"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,7 @@
+{
+  "package_name": "livox_ros_driver2",
+  "non_idl_tuples": [
+    "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/src/livox_ros_driver2:msg/CustomPoint.msg",
+    "/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/src/livox_ros_driver2:msg/CustomMsg.msg"
+  ]
+}

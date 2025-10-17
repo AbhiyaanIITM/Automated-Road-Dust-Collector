@@ -1,0 +1,16 @@
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/config/rviz2_config.rviz
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/ament_index/resource_index/package_run_dependencies/rviz2_config
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/ament_index/resource_index/parent_prefix_path/rviz2_config
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/environment/ament_prefix_path.sh
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/environment/ament_prefix_path.dsv
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/environment/path.sh
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/environment/path.dsv
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/local_setup.bash
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/local_setup.sh
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/local_setup.zsh
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/local_setup.dsv
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/package.dsv
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/ament_index/resource_index/packages/rviz2_config
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/cmake/rviz2_configConfig.cmake
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/cmake/rviz2_configConfig-version.cmake
+/home/abhiyaan-cu/ardc/Automated-Road-Dust-Collector/install/rviz2_config/share/rviz2_config/package.xml

@@ -1,0 +1,4 @@
+source;share/dataloader/local_setup.bash
+source;share/dataloader/local_setup.dsv
+source;share/dataloader/local_setup.sh
+source;share/dataloader/local_setup.zsh
