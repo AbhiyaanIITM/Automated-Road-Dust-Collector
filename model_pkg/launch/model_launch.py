@@ -25,7 +25,7 @@ def generate_launch_description():
     pathConfigFile = os.path.join(get_package_share_directory(namePackage), 'config/ekf.yaml')
     # Processing xacro
     robotDescription = xacro.process_file(pathModelFile).toxml()
-    rviz_config_file = LaunchConfiguration('rviz_config_file')
+    rviz_config_file = '/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/rviz/rviz_basic_settings.rviz'
     use_sim_time = LaunchConfiguration('use_sim_time')
     # qos = LaunchConfiguration('qos')
     parameters_rtab = {
@@ -190,7 +190,7 @@ def generate_launch_description():
     
     launchDescriptionObject = LaunchDescription([
         # launch.actions.ExecuteProcess(cmd=['ros2', 'launch', 'slam_toolbox', 'online_async_launch.py', 'slam_params_file:=./src/model_pkg/config/mapper_params_online_async.yaml', 'use_sim_time:=true']),
-        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose',"/home/abhiyaan-cu/gazebo_ws/src/model_pkg/model/world_simple.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=false"], output='screen'),
+        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose',"/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/model/world.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=false"], output='screen'),
         # launch.actions.ExecuteProcess(cmd=['ros2','run','teleop_twist_keyboard','teleop_twist_keyboard','cmd_vel:=cmd_vel_joy'])
         ])
     launchDescriptionObject.add_action(declare_urdf_model_path_cmd)
