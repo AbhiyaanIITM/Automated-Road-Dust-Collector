@@ -9,7 +9,7 @@ import os
 def generate_launch_description():
 
     return LaunchDescription([
-        DeclareLaunchArgument("topic", description="a pointcloud topic to process", default_value="/gazebo_ros_laser_controller/out"),
+        DeclareLaunchArgument("topic", description="a pointcloud topic to process", default_value="/scanner/cloud"),
         Node(
             package='pointcloud_to_grid',
             executable='pointcloud_to_grid_node',
