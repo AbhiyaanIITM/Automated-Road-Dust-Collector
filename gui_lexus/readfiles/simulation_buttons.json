@@ -1,0 +1,86 @@
+{
+    "buttons":
+    [
+        {
+            "id":"simButton",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "label":"gazebo",
+            "command":"'screen', '-mdS', 'simulation1', 'ign gazebo -v 4 -r ackermann_steering.sdf'"
+        },        
+        {
+            "id":"bridgeButton",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "label":"gz bridge",
+            "command":"'screen', '-mdS', 'gz_bridge1', 'ros2 launch sim_wayp_plan_tools gazebo_bridge.launch.py'"
+        },                
+        {
+            "id":"teleopButton",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "label":"teleop",
+            "command":"'screen', '-mdS', 'teleop1', 'ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/model/vehicle_blue/cmd_vel'"
+        },
+        {
+            "id":"rvizButton",
+            "textColor":"darkblue",
+            "bgColor":"lightblue",
+            "label":"rviz",
+            "command":"'screen', '-mdS', 'rviz2_a', 'ros2  sim_wayp_plan_tools rviz1.launch.py'"
+        },
+        {
+            "id":"rqtReconfigureButton",
+            "label":"rqt reconfigure",
+            "command":"'screen', '-mdS', 'rqt_reconfigure', 'ros2 run rqt_reconfigure rqt_reconfigure'"
+        },
+        {
+            "id":"foxglove_bridge_launch.xml",
+            "label":"foxglove",
+            "command":"'screen', '-mdS', 'foxglove', 'ros2 launch lexus_bringup foxglove_bridge_launch.xml'"
+        },   
+        {
+            "id":"waypoint_loader",
+            "label":"waypoint load 1",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "command":"'screen', '-mdS', 'waypoint_loader_1', 'ros2 launch sim_wayp_plan_tools waypoint_loader.launch.py'"
+        },
+        {
+            "id":"waypoint_loader",
+            "label":"waypoint load 2",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "command":"'screen', '-mdS', 'waypoint_loader_2', 'ros2 run sim_wayp_plan_tools waypoint_loader --ros-args -p file_name:=sim_waypoints1.csv -p file_dir:=/home/he/ros2_ws/src/sim_wayp_plan_tools/csv'"
+        },
+        {
+            "id":"waypoint_to_target",
+            "label":"waypoint to target",
+            "textColor":"darkgreen",
+            "bgColor":"lightgreen",
+            "__comment":"'screen', '-mdS', 'waypoint_to_target2', 'ros2 run sim_wayp_plan_tools waypoint_to_target --ros-args -p lookahead_min:=11.0 -p lookahead_max:=17.0 -p mps_alpha:=3.5 -p mps_beta:=5.5 -p waypoint_topic:=lexus3/waypointarray'",
+            "command":  "'screen', '-mdS', 'waypoint_to_target1', 'ros2 launch sim_wayp_plan_tools waypoint_to_target.launch.py'"
+        },
+        {
+            "id":"pursuit_control",
+            "label":"pure pursuit",
+            "textColor":"darkred",
+            "bgColor":"pink",
+            "command":"'screen', '-mdS', 'single_goal_pursuit1', 'ros2 launch sim_wayp_plan_tools single_goal_pursuit.launch.py'"
+        },      
+        {
+            "id":"stanley_control",
+            "label":"stanley",
+            "textColor":"darkred",
+            "bgColor":"pink",
+            "command":"'screen', '-mdS', 'stanley_control1', 'ros2 launch sim_wayp_plan_tools stanley_control.launch.py'"
+        },
+        {
+            "id":"reinit_control",
+            "label":"reinit control",
+            "textColor":"darkred",
+            "bgColor":"pink",
+            "command": "'`ros2 topic pub --once /sim1/control_reinit std_msgs/msg/Bool \"{data: true}\"'`"
+        }
+    ]
+}

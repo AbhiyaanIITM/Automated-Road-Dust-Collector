@@ -1,0 +1,88 @@
+{
+"buttons":
+[
+    {
+        "id":"foxglove_bridge_launch.xml",
+        "label":"foxglove bridge",
+        "command":"'screen', '-mdS', 'foxglove_bridge', 'source ~/autoware/install/setup.bash && ros2 launch lexus_bringup foxglove_bridge.launch.py'"
+    },
+    {
+        "id":"foxglove_bridge_launch.xml",
+        "label":"foxglove",
+        "command":"'screen', '-mdS', 'foxglove', 'foxglove-studio', 'foxglove://open?ds=foxglove-websocket&ds.url=ws://localhost:8765/'"
+    },
+    {
+        "id": "new_line"
+    },
+    {
+        "id":"can_pacmod", "textColor":"darkblue", "bgColor":"lightblue", "label":"can",
+        "command":"'screen', '-mdS', 'can_pacmod3', 'source ~/autoware/install/setup.bash && ros2 launch autoware_launch can1.launch.xml'"
+    },
+    {
+        "id":"tfStaticButton", "label":"tf static", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'tfStatic_aw', 'source ~/autoware/install/setup.bash && ros2 launch autoware_launch tf_static.launch.py'"
+    },
+    {
+        "id":"ousters", "label":"ousters", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'ousters', 'source ~/ros2_ws/install/setup.bash && source ~/autoware/install/setup.bash && ros2 launch lexus3_sensor_kit_launch lidar.launch.py'" 
+    },
+    {
+        "id":"raw_vehicle_converter", "label":"raw_vehicle_converter", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'raw_vehicle_converter', 'source ~/autoware/install/setup.bash && ros2 launch autoware_raw_vehicle_cmd_converter raw_vehicle_converter.launch.xml'" 
+    },
+    {
+        "id":"engage1", "label":"engage", "bgColor":"darkblue", "textColor":"lightblue",
+        "command":"'screen', '-mdS', 'engage', 'source ~/autoware/install/setup.bash && ros2 topic pub /autoware/engage autoware_vehicle_msgs/msg/Engage', '{stamp: {sec: 0, nanosec: 0}, engage: true}'"
+    },
+    {
+        "id":"pointcloud_preprocessor", "label":"pointcloud_preprocessor", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'pointcloud_preprocessor', 'source ~/autoware/install/setup.bash && ros2 launch lexus3_sensor_kit_launch pointcloud_preprocessor.launch.py use_concat_filter:=true'" 
+    },
+    {
+        "id":"aw_base", "label":"aw base", "bgColor":"darkred", "textColor":"black",
+        "command":"'screen', '-mdS', 'aw_base', 'source ~/autoware/install/setup.bash && ros2 launch autoware_launch autoware.launch.xml launch_sensing:=true launch_perception:=true launch_planning:=true launch_control:=true"
+    },    
+    {
+        "id":"aw_sensors", "label":"aw sensors", "bgColor":"darkred", "textColor":"black",
+        "command":"'screen', '-mdS', 'aw_sensors', 'source ~/ros2_ws/install/setup.bash && source ~/autoware/install/setup.bash && ros2 launch autoware_launch lexus3_sensors_autoware.launch.py'"
+    },
+    {
+        "id":"usb_cam", "label":"usb_cam", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'usb_cam', 'source ~/autoware/install/setup.bash && ros2 launch lexus_bringup usb_web_cam1.launch.py" 
+    },
+    {
+        "id":"new_line"
+    },                        
+    {
+        "id":"rqt_reconfigure_button", "label":"rqt reconfigure",
+        "command":"'screen', '-mdS', 'rqt_reconfigure', 'ros2 run rqt_reconfigure rqt_reconfigure'"
+    },        
+    {
+        "id":"rqt_tf_tree", "label":"rqt tf tree",
+        "command":"'screen', '-mdS', 'rqt_tf_tree', 'ros2 run rqt_tf_tree rqt_tf_tree'"
+    },                        
+    {
+        "id":"rqt_topic", "label":"rqt topic",
+        "command":"'screen', '-mdS', 'rqt_topic', 'ros2 run rqt_topic rqt_topic'"
+    },                        
+    {
+        "id":"rqt_console", "label":"rqt console",
+        "command":"'screen', '-mdS', 'rqt_console', 'ros2 run rqt_console rqt_console'"
+    },       
+    {
+        "id":"rqt_graph", "label":"rqt graph",
+        "command":"'screen', '-mdS', 'rqt_graph', 'rqt_graph'"
+    },
+    {
+        "id":"rqt_diagnostic_graph_monitor", "label":"rqt_diagnostic_graph_monitor", "bgColor":"darkblue", "textColor":"lightblue", 
+        "command":"'screen', '-mdS', 'rqt_diagnostic_graph_monitor', 'source ~/autoware/install/setup.bash && ros2 run rqt_diagnostic_graph_monitor rqt_diagnostic_graph_monitor'" 
+    },
+    {
+        "id": "new_line"
+    },
+    {
+        "id":"goal01", "label":"goal parkolo", "bgColor":"darkgreen", "textColor":"lightgreen",
+        "command": "ros2 topic pub --once /planning/mission_planning/goal geometry_msgs/msg/PoseStamped <<EOF\nheader:\n  stamp:\n    sec: 0\n    nanosec: 0\n  frame_id: map\npose:\n  position:\n    x: 0.8\n    y: 2.2\n    z: 0.1\n  orientation:\n    x: 0.0\n    y: 0.0\n    z: 0.70710678\n    w: 0.70710678\nEOF"
+    }
+]
+}

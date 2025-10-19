@@ -1,0 +1,22 @@
+{
+    "buttons":
+    [
+        {
+            "id":"rvizButton",
+            "textColor":"cyan",
+            "bgColor":"black",
+            "label":"rviz2",
+            "command":"'screen', '-mdS', 'rviz2', 'ros2 run rviz2 rviz2 '"
+        },
+        {
+            "id":"rqtReconfigureButton",
+            "label":"rqt_reconfigure",
+            "command":"'screen', '-mdS', 'rqt_reconfigure', 'ros2 run rqt_reconfigure rqt_reconfigure'"
+        },
+        {
+            "id":"mcButton",
+            "label":"mc",
+            "command":"'screen', '-mdS', 'mc', 'mc'"
+        }
+    ]
+}

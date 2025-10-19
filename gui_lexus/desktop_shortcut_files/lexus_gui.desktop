@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=bash -ci 'source ~/ros2_ws/install/local_setup.bash && ros2 launch gui_lexus gui_ros_lexus.launch.py &'
+Name=lexus GUI
+Comment=ss
+Icon=/mnt/icons/icon04.png
+Name[en_US]=lexus_gui.desktop
