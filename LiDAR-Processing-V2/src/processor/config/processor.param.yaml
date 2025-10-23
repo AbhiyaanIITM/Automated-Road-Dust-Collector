@@ -1,6 +1,6 @@
 processor:
   ros__parameters:
-    input_cloud_topic: /gazebo_ros_laser_controller/out
+    input_cloud_topic: /Livox/PointCloud
     ground_cloud_topic: /ground_pointcloud
     obstacle_cloud_topic: /obstacle_pointcloud
     unsegmented_cloud_topic: /unknown_pointcloud
