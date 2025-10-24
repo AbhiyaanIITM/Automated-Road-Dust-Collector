@@ -1,0 +1,10 @@
+Pillow
+charset-normalizer==2.0.0
+cython
+datasets
+numpy==1.23.0
+opencv-python
+packaging==20.9
+setuptools
+torch
+transformers
