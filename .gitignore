@@ -42,3 +42,5 @@ install
 # vscode
 .vscode/*
 
+*.pt
+semseg/semseg/weights/FastSAM.pt

@@ -1,18 +1,21 @@
 import numpy as np
 import os
-from transformers import AutoFeatureExtractor, SegformerForSemanticSegmentation
+# from transformers import AutoFeatureExtractor, SegformerForSemanticSegmentation
+from transformers import AutoModelForSemanticSegmentation
 import torch
+from torchvision import transforms
 from PIL import Image as PilImage
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import String
 from cv_bridge import CvBridge
-
+import warnings
+warnings.filterwarnings('ignore')
 ALGO_VERSION = os.getenv("MODEL_NAME")
 
 if not ALGO_VERSION:
-    ALGO_VERSION = 'nvidia/segformer-b4-finetuned-cityscapes-1024-1024'
+    ALGO_VERSION = 'nvidia/mit-b5'
 
 
 def ade_palette():
@@ -58,13 +61,21 @@ def ade_palette():
 
 
 def predict(image: Image):
-    feature_extractor = AutoFeatureExtractor.from_pretrained(ALGO_VERSION)
-    model = SegformerForSemanticSegmentation.from_pretrained(ALGO_VERSION)
-
-    inputs = feature_extractor(image, return_tensors="pt")
-
+    
+    # feature_extractor = AutoFeatureExtractor.from_pretrained(ALGO_VERSION)
+    # model = SegformerForSemanticSegmentation.from_pretrained(ALGO_VERSION)
+    model = AutoModelForSemanticSegmentation.from_pretrained(ALGO_VERSION)
+    model.eval()
+    # inputs = feature_extractor(image, return_tensors="pt")
+    preprocess = transforms.Compose([
+        transforms.Resize((520, 520)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                            std=[0.229, 0.224, 0.225])
+    ])  
+    pixel_values = preprocess(image).unsqueeze(0)
     with torch.no_grad():
-        output = model(**inputs)
+        output = model(pixel_values)
     
     labels = model.config.id2label
     return labels, output.logits
@@ -79,7 +90,7 @@ class RosIO(Node):
         self.declare_parameter('pub_masks', True)
         self.image_subscription = self.create_subscription(
             Image,
-            '/camera/image_raw',
+            '/zed/zed_node/rgb/image_rect_color',
             self.listener_callback,
             10
         )
@@ -110,7 +121,7 @@ class RosIO(Node):
 
     def listener_callback(self, msg: Image):
         bridge = CvBridge()
-        cv_image: np.ndarray = bridge.imgmsg_to_cv2(msg)
+        cv_image: np.ndarray = bridge.imgmsg_to_cv2(msg, desired_encoding='rgb8')
         np_image = cv_image.astype(np.uint8)
         converted_image = PilImage.fromarray(np_image, 'RGB')
         labels, logits = predict(converted_image)
@@ -138,6 +149,7 @@ class RosIO(Node):
             self.pixels_publisher.publish(pixel_output)
 
         if self.get_parameter('pub_image').value:
+            
             img = np.uint8(cv_image) * 0.5 + color_seg * 0.5
             img_output = bridge.cv2_to_imgmsg(img)
             self.image_publisher.publish(img_output)

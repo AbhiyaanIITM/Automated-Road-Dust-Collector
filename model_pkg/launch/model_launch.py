@@ -19,7 +19,9 @@ def generate_launch_description():
     worldFileRelativePath = 'model/green_world.world'
     configFileRelativePath = 'config/ekf.yaml'
     # Absolute Paths
-    pathModelFile = os.path.join(get_package_share_directory(namePackage), modelFileRelativePath)
+    pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
+
+    pathModelFile = '/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/ardc_urdf.xacro'
     pathWorldFile = os.path.join(get_package_share_directory(namePackage), worldFileRelativePath)
     pathRvizFile = os.path.join(get_package_share_directory(namePackage),'rviz/rviz_basic_settings.rviz')
     pathConfigFile = os.path.join(get_package_share_directory(namePackage), 'config/ekf.yaml')
@@ -95,7 +97,9 @@ def generate_launch_description():
     spawnModelNode = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
-        arguments=['-topic', 'robot_description', '-entity', robotXacroName],
+        arguments=['-topic', 'robot_description', '-entity', robotXacroName, '-x', '0.0',
+        '-y', '0.0',
+        '-z', '0.05' ],
         output='screen'
     )
 
@@ -115,7 +119,11 @@ def generate_launch_description():
         parameters=[params],
         condition=UnlessCondition(LaunchConfiguration('gui'))
     )
-    
+    nav2_bringup = IncludeLaunchDescription(
+       PythonLaunchDescriptionSource(
+           os.path.join(pkg_nav2_bringup, 'launch', 'navigation_launch.py'),
+       )
+    )
 
     # joint_state_publisher_gui_node = Node(
     #     package='joint_state_publisher_gui',
@@ -129,7 +137,9 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', rviz_config_file])
+        arguments=['-d', rviz_config_file],
+        parameters=[{'use_sim_time': True}]
+        )
 
 #     robot_localization_node = Node(
 #        package='robot_localization',
@@ -190,7 +200,15 @@ def generate_launch_description():
     
     launchDescriptionObject = LaunchDescription([
         # launch.actions.ExecuteProcess(cmd=['ros2', 'launch', 'slam_toolbox', 'online_async_launch.py', 'slam_params_file:=./src/model_pkg/config/mapper_params_online_async.yaml', 'use_sim_time:=true']),
-        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose',"/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/world.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=true"], output='screen'),
+        # "/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/world.world" worldFileRelativePath
+        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose', "/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/world.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=true"], output='screen'),
+        # IncludeLaunchDescription(
+        #             PythonLaunchDescriptionSource(
+        #                 os.path.join(pkg_nav2_bringup, 'launch', 'navigation_launch.py')),
+        #             launch_arguments={
+        #                 'params_file': "/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/config/nav2_params.yaml" #[os.path.join(get_package_share_directory(pkg_name), 'rviz', 'kp_nav_copy.yaml'),'']
+        #                 }.items()
+        #         ),
         # launch.actions.ExecuteProcess(cmd=['ros2','run','teleop_twist_keyboard','teleop_twist_keyboard','cmd_vel:=cmd_vel_joy'])
         ])
     launchDescriptionObject.add_action(declare_urdf_model_path_cmd)

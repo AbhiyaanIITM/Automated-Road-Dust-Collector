@@ -10,7 +10,7 @@ def generate_launch_description():
     pkg_dir = get_package_share_directory('urban_road_filter')
     
     # Path to the parameters.yaml file
-    config_file_path = os.path.join(pkg_dir, 'config', 'parameters.yaml')
+    config_file_path = '/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/urban_road_filter/config/parameters.yaml' # os.path.join(pkg_dir, 'config', 'parameters.yaml')
     
     # Create the default rviz config path
     default_rviz_config_path = os.path.join(pkg_dir, 'config', 'urban_road_filter.rviz')
@@ -40,13 +40,13 @@ def generate_launch_description():
     )
     
     # Start RViz
-    rviz_cmd = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        arguments=['-d', rviz_config_file],
-        output='screen'
-    )
+    # rviz_cmd = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     arguments=['-d', rviz_config_file],
+    #     output='screen'
+    # )
     
     # Make sure the rviz configuration directory exists
     os.makedirs(os.path.join(pkg_dir, 'config'), exist_ok=True)
@@ -56,10 +56,10 @@ def generate_launch_description():
     
     # Add launch arguments
     ld.add_action(declare_use_sim_time_cmd)
-    ld.add_action(declare_rviz_config_file_cmd)
+    # ld.add_action(declare_rviz_config_file_cmd)
     
     # Add nodes to the launch description
     ld.add_action(urban_road_filter_cmd)
-    ld.add_action(rviz_cmd)
+    # ld.add_action(rviz_cmd)
     
     return ld

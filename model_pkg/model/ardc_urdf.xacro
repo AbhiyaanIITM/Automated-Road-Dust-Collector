@@ -28,6 +28,7 @@
   <xacro:property name="noise_stddev" value="0.0"/>
 
   <xacro:property name="M_PI" value="3.1415926535897931"/>
+  <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
 
   <!-- ============================= -->
   <!-- MATERIALS (for RViz) -->
@@ -195,9 +196,9 @@
   
   <link name="base_footprint"/>
   <joint name="base_footprint_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="base_footprint"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
   </joint>
 
 
@@ -224,12 +225,12 @@
     <max_wheel_acceleration>1.0</max_wheel_acceleration>
 
     <!-- output -->
-    <publish_odom>false</publish_odom>        <!-- odom topic -->
-    <publish_odom_tf>true</publish_odom_tf>   <!-- odom frame -->
+    <publish_odom>true</publish_odom>        <!-- odom topic -->
+    <publish_odom_tf>false</publish_odom_tf>   <!-- odom frame -->
     <publish_wheel_tf>true</publish_wheel_tf>
 
     <odometry_frame>odom</odometry_frame>
-    <robot_base_frame>base_link</robot_base_frame>
+    <robot_base_frame>base_footprint</robot_base_frame>
   </plugin>
   </gazebo>
 
@@ -238,7 +239,7 @@
   <!-- ============================= -->
 
   <link name="lidar_link">
-    <visual>
+    <!-- <visual>
       <geometry>
         <box size="0.1 0.1 0.1"/>
       </geometry>
@@ -254,7 +255,7 @@
       <mass value="0.05"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
+    </inertial> -->
   </link>
   
   <joint name="lidar_joint" type="fixed">
@@ -263,7 +264,7 @@
     <origin xyz="0.0 0 0.6" rpy="0 0 0"/>
   </joint>
 
-  <gazebo reference="lidar_link">
+  <!-- <gazebo reference="lidar_link">
     <sensor type="gpu_ray" name="lidar-Livox-mid360">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
@@ -299,12 +300,15 @@
       <ros>
         <namespace>/</namespace>
         <remapping>~/out:=/Livox/PointCloud</remapping>
-        <!-- <parameter name="frame_name">lidar_link</parameter>
-        <parameter name="output_type">sensor_msgs/PointCloud2</parameter> -->
       </ros>
       </plugin>
     </sensor>
-  </gazebo>
+  </gazebo> -->
+
+  <xacro:mid360 name="livox" parent="base_link" topic="livox">
+    <origin xyz="-${base_length/2} 0 ${wheel_radius + base_height}" rpy="0 0 3.14"/> 
+    0 ${M_PI/3} 3.14
+  </xacro:mid360>
 
   <!-- ============================= -->
   <!-- Camera -->
@@ -313,10 +317,10 @@
   <link name="camera_link">
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
+      <!-- <geometry>
     <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </collision>
+      </geometry> -->
+    </collision> 
 
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -337,7 +341,7 @@
     <parent link = "base_link"/>
     <child link="camera_link"/>
     <origin xyz="-${base_length/2} 0 ${wheel_radius + base_height}" rpy="0 0.2 3.14"/>
-  </joint>
+  </joint> 
 
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera_link">
@@ -355,9 +359,7 @@
         </clip>
         <noise>
           <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.
-               That pixel's noise value is added to each of its color
-               channels, which at that point lie in the range [0,1]. -->
+         
           <mean>0.0</mean>
           <stddev>0.007</stddev>
         </noise>
@@ -406,10 +408,10 @@
   <origin xyz="0 0 0.01"/>
 </joint>
 
-<gazebo reference="lidar_link">
+<gazebo reference="imu_link">
   <sensor name="imu_sensor" type="imu">
    <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-   <frameName>lidar_link</frameName>
+   <frameName>imu_link</frameName>
       <ros>
         <remapping>~/out:=/imu/data</remapping>
       </ros>
@@ -423,7 +425,7 @@
         <x>
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
             <bias_mean>0.0</bias_mean>
             <bias_stddev>0.0</bias_stddev>
           </noise>
@@ -431,7 +433,7 @@
         <y>
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
             <bias_mean>0.0</bias_mean>
             <bias_stddev>0.0</bias_stddev>
           </noise>
@@ -439,7 +441,7 @@
         <z>
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
             <bias_mean>0.0</bias_mean>
             <bias_stddev>0.0</bias_stddev>
           </noise>
@@ -457,7 +459,7 @@
         <y>
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
             <bias_mean>0.0</bias_mean>
             <bias_stddev>0.0</bias_stddev>
           </noise>
@@ -465,7 +467,7 @@
         <z>
           <noise type="gaussian">
             <mean>0.0</mean>
-            <stddev>0.0</stddev>
+            <stddev>0.01</stddev>
             <bias_mean>0.0</bias_mean>
             <bias_stddev>0.0</bias_stddev>
           </noise>
@@ -512,7 +514,7 @@
 	      <horizontal>
 		<noise type="gaussian">
 		  <mean>0.0</mean>
-		  <stddev>0.01</stddev>
+		  <stddev>0.00</stddev>
 		</noise>
 	      </horizontal>
 	      <vertical>
@@ -534,3 +536,5 @@
 	</sensor>
    </gazebo>
 </robot>
+
+
