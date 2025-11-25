@@ -1,4 +1,4 @@
-##  25 November 2025 ------------------------------------------------------------------------------------------------------------------
+##  25 November 2025 
 
 ### Update
 Integrated the `opennav_coverage` package with the simulator.
@@ -24,8 +24,9 @@ Integrated the `opennav_coverage` package with the simulator.
 ```bash
 ros2 launch opennav_coverage_demo coverage_ardc.launch.py
 ```
+## 17 October 2025
 
---------------------------------------------------------------------------------------------------------------------------------------------
+### Simulation Setup
 Download required Gazebo models here: [https://github.com/osrf/gazebo_models](https://github.com/osrf/gazebo_models)  
 Copy all the models to `$HOME/.gazebo/models`
 
