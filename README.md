@@ -20,9 +20,20 @@ Integrated the `opennav_coverage` package with the simulator.
 
 ---
 
-### Launch Command
+### Launch Coverage Planner
 ```bash
 ros2 launch opennav_coverage_demo coverage_ardc.launch.py
+```
+
+### Launch Nav Bringup Only
+```bash
+ros2 launch model_pkg nav_launch.py
+```
+
+### Launch Simulation Only
+```bash
+ros2 launch model_pkg model_launch.py
+
 ```
 ## 17 October 2025
 
