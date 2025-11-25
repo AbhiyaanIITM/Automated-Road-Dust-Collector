@@ -3,22 +3,16 @@
 ### Update
 Integrated the `opennav_coverage` package with the simulator.
 
----
-
 ### Current Issues / TODO
 1. Robot does not execute turns correctly when navigating using Nav2.
 2. Robot moves outside the roadway boundary during turning maneuvers.
 3. Obstacle avoidance is not functioning as expected; the robot stops upon detecting obstacles instead of replanning.
-
----
 
 ### Dependencies
 | Package | Notes | Repository |
 |--------|------|-------------|
 | Field2Cover | Use branch: `v1.2.1-devel` | https://github.com/Fields2Cover/Fields2Cover |
 | livox_ros_driver2 | Required for Livox LiDAR integration | (provide specific repository link if applicable) |
-
----
 
 ### Launch Coverage Planner
 ```bash
