@@ -25,9 +25,10 @@
   <xacro:property name="samples" value="40000"/>
   <xacro:property name="resolution" value="0.002"/>
   <xacro:property name="noise_mean" value="0.0"/>
-  <xacro:property name="noise_stddev" value="0.01"/>
+  <xacro:property name="noise_stddev" value="0.0"/>
 
   <xacro:property name="M_PI" value="3.1415926535897931"/>
+  <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
 
   <!-- ============================= -->
   <!-- MATERIALS (for RViz) -->
@@ -195,9 +196,9 @@
   
   <link name="base_footprint"/>
   <joint name="base_footprint_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="base_footprint"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
   </joint>
 
 
@@ -224,12 +225,12 @@
     <max_wheel_acceleration>1.0</max_wheel_acceleration>
 
     <!-- output -->
-    <publish_odom>true</publish_odom>
-    <publish_odom_tf>true</publish_odom_tf>
+    <publish_odom>true</publish_odom>        <!-- odom topic -->
+    <publish_odom_tf>false</publish_odom_tf>   <!-- odom frame -->
     <publish_wheel_tf>true</publish_wheel_tf>
 
     <odometry_frame>odom</odometry_frame>
-    <robot_base_frame>base_link</robot_base_frame>
+    <robot_base_frame>base_footprint</robot_base_frame>
   </plugin>
   </gazebo>
 
@@ -238,7 +239,7 @@
   <!-- ============================= -->
 
   <link name="lidar_link">
-    <visual>
+    <!-- <visual>
       <geometry>
         <box size="0.1 0.1 0.1"/>
       </geometry>
@@ -254,17 +255,17 @@
       <mass value="0.05"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
+    </inertial> -->
   </link>
   
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="-0.32 0 0.4" rpy="0 0 0"/>
+    <origin xyz="0.0 0 0.6" rpy="0 0 0"/>
   </joint>
 
-  <gazebo reference="lidar_link">
-    <sensor type="gpu_ray" name="lidar-VLP16">
+  <!-- <gazebo reference="lidar_link">
+    <sensor type="gpu_ray" name="lidar-Livox-mid360">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
       <update_rate>40</update_rate>
@@ -295,13 +296,19 @@
           </noise>
       </ray>
       <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_ray_sensor.so">
-
-      <outputType>sensor_msgs/PointCloud2</outputType>
-      <topicName>Lidar/PointCloud</topicName>
-      <frameName>lidar_link</frameName>
+      <frame_name>lidar_link</frame_name>
+      <ros>
+        <namespace>/</namespace>
+        <remapping>~/out:=/Livox/PointCloud</remapping>
+      </ros>
       </plugin>
     </sensor>
-  </gazebo>
+  </gazebo> -->
+
+  <xacro:mid360 name="livox" parent="base_link" topic="livox">
+    <origin xyz="-${base_length/2} 0 ${wheel_radius + base_height}" rpy="0 0 3.14"/> 
+    0 ${M_PI/3} 3.14
+  </xacro:mid360>
 
   <!-- ============================= -->
   <!-- Camera -->
@@ -310,10 +317,10 @@
   <link name="camera_link">
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
+      <!-- <geometry>
     <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </collision>
+      </geometry> -->
+    </collision> 
 
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -334,7 +341,7 @@
     <parent link = "base_link"/>
     <child link="camera_link"/>
     <origin xyz="-${base_length/2} 0 ${wheel_radius + base_height}" rpy="0 0.2 3.14"/>
-  </joint>
+  </joint> 
 
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera_link">
@@ -352,9 +359,7 @@
         </clip>
         <noise>
           <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.
-               That pixel's noise value is added to each of its color
-               channels, which at that point lie in the range [0,1]. -->
+         
           <mean>0.0</mean>
           <stddev>0.007</stddev>
         </noise>
@@ -376,6 +381,160 @@
     </sensor>
   </gazebo>
 
+<!-- ============================= -->
+<!-- IMU -->
+<!-- ============================= -->
 
+<link name="imu_link">
+  <visual>
+    <geometry>
+      <box size="0.1 0.1 0.1"/>
+    </geometry>
+  </visual>
+  <collision>
+    <geometry>
+      <box size="0.1 0.1 0.1"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <mass value="0.01"/>
+    <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+  </inertial>
+</link>
 
+<joint name="imu_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="imu_link"/>
+  <origin xyz="0 0 0.01"/>
+</joint>
+
+<gazebo reference="imu_link">
+  <sensor name="imu_sensor" type="imu">
+   <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+   <frameName>imu_link</frameName>
+      <ros>
+        <remapping>~/out:=/imu/data</remapping>
+      </ros>
+      <initial_orientation_as_reference>false</initial_orientation_as_reference>
+    </plugin>
+    <always_on>true</always_on>
+    <update_rate>500</update_rate>
+    <visualize>true</visualize>
+    <imu>
+      <angular_velocity>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </z>
+      </angular_velocity>
+      <linear_acceleration>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.0</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            <bias_mean>0.0</bias_mean>
+            <bias_stddev>0.0</bias_stddev>
+          </noise>
+        </z>
+      </linear_acceleration>
+    </imu>
+  </sensor>
+</gazebo>
+
+<!-- ============================= -->
+<!-- GPS -->
+<!-- ============================= -->
+<link name="gps_link">
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+    <box size="0.1 0.1 0.1"/>      
+    </geometry>
+  </collision>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+    <box size="0.1 0.1 0.1"/>      
+    </geometry>
+  </visual>
+  <inertial>
+    <mass value="1e-5" />
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+  </inertial>
+</link>
+<joint name="gps_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="gps_link"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+ <gazebo reference="gps_link">
+	<sensor name="bot_gps" type="gps">
+	  <always_on>true</always_on>
+	  <update_rate>1</update_rate>
+	  <pose>0 0 0 0 0 0</pose>
+	  <gps>
+	    <position_sensing>
+	      <horizontal>
+		<noise type="gaussian">
+		  <mean>0.0</mean>
+		  <stddev>0.00</stddev>
+		</noise>
+	      </horizontal>
+	      <vertical>
+		<noise type="gaussian">
+		  <mean>0.0</mean>
+		  <stddev>0.01</stddev>
+		</noise>
+	      </vertical>
+	    </position_sensing>
+	  </gps>
+	  <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+	    <ros>
+	      <namespace>gps</namespace>
+	      <remapping>~/out:=/gpsfix</remapping>
+	    </ros>
+	    <output_type>sensor_msgs/NavSatFix</output_type>
+            <frame_name>gps_link</frame_name>
+	  </plugin>
+	</sensor>
+   </gazebo>
 </robot>
+
+
