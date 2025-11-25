@@ -1,17 +1,29 @@
-25/11/25 
-  Integrated the opennav_coverage package with simulator. 
+## Project Log — 25 November 2025
 
-TODO:
-    1. Something's wrong with nav2, bot doesn't turn!!
-    2. It goes out of the road for turns.
-    3. Doesn't avoid obstacles. It just stops when it sees one.
+### Update
+Integrated the `opennav_coverage` package with the simulator.
 
-DEPENDENCIES:
-    1. Field2Cover : https://github.com/Fields2Cover/Fields2Cover (switch to v1.2.1-devel branch)
-    2. livox_ros_driver2
-    
-launch command:
-  ros2 launch opennav_coverage_demo coverage_ardc.launch.py
+---
+
+### Current Issues / TODO
+1. Robot does not execute turns correctly when navigating using Nav2.
+2. Robot moves outside the roadway boundary during turning maneuvers.
+3. Obstacle avoidance is not functioning as expected; the robot stops upon detecting obstacles instead of replanning.
+
+---
+
+### Dependencies
+| Package | Notes | Repository |
+|--------|------|-------------|
+| Field2Cover | Use branch: `v1.2.1-devel` | https://github.com/Fields2Cover/Fields2Cover |
+| livox_ros_driver2 | Required for Livox LiDAR integration | (provide specific repository link if applicable) |
+
+---
+
+### Launch Command
+```bash
+ros2 launch opennav_coverage_demo coverage_ardc.launch.py
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 Download required Gazebo models here: [https://github.com/osrf/gazebo_models](https://github.com/osrf/gazebo_models)  
