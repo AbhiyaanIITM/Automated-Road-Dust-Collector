@@ -3,7 +3,7 @@ import launch_ros.actions
 import launch.actions
 
 def generate_launch_description():
-    parameters_file_path = '/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/config/dual_ekf.yaml'
+    parameters_file_path = '/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/config/dual_ekf.yaml'
     
     return LaunchDescription([
         launch.actions.DeclareLaunchArgument(

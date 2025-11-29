@@ -21,13 +21,13 @@ def generate_launch_description():
     # Absolute Paths
     pkg_nav2_bringup = get_package_share_directory('nav2_bringup')
 
-    pathModelFile = '/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/ardc_urdf.xacro'
+    pathModelFile = '/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/model/ardc_urdf.xacro'
     pathWorldFile = os.path.join(get_package_share_directory(namePackage), worldFileRelativePath)
     pathRvizFile = os.path.join(get_package_share_directory(namePackage),'rviz/rviz_basic_settings.rviz')
     pathConfigFile = os.path.join(get_package_share_directory(namePackage), 'config/ekf.yaml')
     # Processing xacro
     robotDescription = xacro.process_file(pathModelFile).toxml()
-    rviz_config_file = '/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/rviz/rviz_basic_settings.rviz'
+    rviz_config_file = '/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/rviz/rviz_basic_settings.rviz'
     use_sim_time = LaunchConfiguration('use_sim_time')
     # qos = LaunchConfiguration('qos')
     parameters_rtab = {
@@ -201,7 +201,7 @@ def generate_launch_description():
     launchDescriptionObject = LaunchDescription([
         # launch.actions.ExecuteProcess(cmd=['ros2', 'launch', 'slam_toolbox', 'online_async_launch.py', 'slam_params_file:=./src/model_pkg/config/mapper_params_online_async.yaml', 'use_sim_time:=true']),
         # "/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/world.world" worldFileRelativePath
-        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose', "/home/abhiyaan-cu/ardc/src/Automated-Road-Dust-Collector/model_pkg/model/world.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=true"], output='screen'),
+        launch.actions.ExecuteProcess(cmd=['gazebo', '--verbose', "/home/alan/ardc_ws/src/Automated-Road-Dust-Collector/model_pkg/model/world.world", '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', "use_sim_time:=true", "headless:=true"], output='screen'),
         # IncludeLaunchDescription(
         #             PythonLaunchDescriptionSource(
         #                 os.path.join(pkg_nav2_bringup, 'launch', 'navigation_launch.py')),

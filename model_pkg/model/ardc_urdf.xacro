@@ -87,8 +87,8 @@
   <joint name="left_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin xyz="${wheel_x_offset} -${wheel_y_offset} 0" rpy="0 0 1.57"/>
-    <axis xyz="-1 0 0"/>
+    <origin xyz="-${wheel_x_offset} -${wheel_y_offset} 0" rpy="0 0 1.57"/>
+    <axis xyz="1 0 0"/>
   </joint>
 
   <gazebo reference="left_wheel">
@@ -118,8 +118,8 @@
   <joint name="right_wheel_joint" type="continuous">
     <parent link="base_link"/>
     <child link="right_wheel"/>
-    <origin xyz="${wheel_x_offset} ${wheel_y_offset} 0" rpy="0 0 1.57"/>
-    <axis xyz="-1 0 0"/>
+    <origin xyz="-${wheel_x_offset} ${wheel_y_offset} 0" rpy="0 0 1.57"/>
+    <axis xyz="1 0 0"/>
   </joint>
 
   <gazebo reference="right_wheel">
@@ -149,7 +149,7 @@
   <joint name="connecting_rod_joint" type="fixed">
     <parent link="base_link"/>
     <child link="connecting_rod"/>
-    <origin xyz="${connecting_rod_x_offset} 0 -${connecting_rod_length/2-0.05}" rpy="0 0 0"/>
+    <origin xyz="${base_length + connecting_rod_x_offset} 0 -${connecting_rod_length/2-0.05}" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
   </joint>
 
@@ -179,7 +179,7 @@
     </inertial>
   </link>
 
-  <joint name="castor_wheel_joint" type="fixed">
+  <joint name="castor_wheel_joint" type="continuous">
     <parent link="connecting_rod"/>
     <child link="castor_wheel"/>
     <origin xyz="0 0 -${connecting_rod_length/2}" rpy="0 0 1.57"/>
@@ -194,12 +194,12 @@
   <!-- Base Footprint -->
   <!-- ============================= -->
   
-  <link name="base_footprint"/>
+  <!-- <link name="base_footprint"/>
   <joint name="base_footprint_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
     <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
-  </joint>
+  </joint> -->
 
 
   <!-- ============================= -->
@@ -213,8 +213,8 @@
     </ros>
 
     <!-- wheels -->
-    <left_joint>left_wheel_joint</left_joint>
-    <right_joint>right_wheel_joint</right_joint>
+    <left_joint>right_wheel_joint</left_joint>
+    <right_joint>left_wheel_joint</right_joint>
 
     <!-- kinematics -->
     <wheel_separation>${2*wheel_y_offset}</wheel_separation>
@@ -224,13 +224,15 @@
     <max_wheel_torque>20</max_wheel_torque>
     <max_wheel_acceleration>1.0</max_wheel_acceleration>
 
+    <!-- input -->
+    <command_topic>cmd_vel</command_topic>
     <!-- output -->
     <publish_odom>true</publish_odom>        <!-- odom topic -->
-    <publish_odom_tf>false</publish_odom_tf>   <!-- odom frame -->
+    <publish_odom_tf>true</publish_odom_tf>   <!-- odom frame -->
     <publish_wheel_tf>true</publish_wheel_tf>
 
     <odometry_frame>odom</odometry_frame>
-    <robot_base_frame>base_footprint</robot_base_frame>
+    <robot_base_frame>base_link</robot_base_frame>
   </plugin>
   </gazebo>
 

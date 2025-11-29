@@ -1,3 +1,0 @@
-[console_scripts]
-segformer_seg = segformer_seg.segformer_seg:main
-
