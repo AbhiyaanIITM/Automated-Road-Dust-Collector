@@ -22,7 +22,7 @@ def generate_launch_description():
             package='patchworkpp',
             executable='demo',
             name='ground_segmentation',
-            output='screen',
+            output='log',
             parameters=[
                 {'cloud_topic': LaunchConfiguration("cloud_topic")}, # Input pointcloud
                 {'frame_id': LaunchConfiguration("cloud_frame")},

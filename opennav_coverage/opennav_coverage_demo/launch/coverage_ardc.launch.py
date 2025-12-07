@@ -33,12 +33,11 @@ def get_share_directory_or_exit(pkg_name):
             f"Please ensure the package is built and the ROS 2 environment is sourced.\n",
             file=sys.stderr
         )
-        # We raise a SystemExit here to prevent the LaunchDescription from being created with bad paths
         raise SystemExit(1)
     print(pkg_name, "retrieved succefully")
     return share_dir
 
-# Safely retrieve package directories
+# Retrieve package directories
 pkg_model = get_share_directory_or_exit('model_pkg')
 pkg_patchworkpp = get_share_directory_or_exit('patchworkpp')
 coverage_demo_dir = get_share_directory_or_exit('opennav_coverage_demo')
@@ -108,10 +107,6 @@ def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz')
 
     rviz_config_file = LaunchConfiguration('rviz_config_file')
-
-    # Robot description from xacro
-    # Note: xacro.process_file might raise an error if the URDF path is bad,
-    # but the path check above should handle the 'None' case.
     robot_description_xml = xacro.process_file(paths['urdf']).toxml()
     common_params = {
         'robot_description': robot_description_xml,
@@ -203,7 +198,7 @@ def generate_launch_description():
 
     demo_cmd = Node(
         package='opennav_coverage_demo',
-        executable='demo_coverage',
+        executable='coverage_navigator',
         emulate_tty=True,
         output='screen',
         parameters=[
@@ -231,7 +226,7 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher_node)
     ld.add_action(joint_state_publisher_node)
     ld.add_action(rviz_node)
-    ld.add_action(ekf_launch)
+    # ld.add_action(ekf_launch)
     ld.add_action(patchwork_pp_launch)
     ld.add_action(bringup_cmd)
     ld.add_action(fake_localization_cmd)
