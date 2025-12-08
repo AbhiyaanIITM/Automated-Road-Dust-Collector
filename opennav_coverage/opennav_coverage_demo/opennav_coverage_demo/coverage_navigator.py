@@ -8,7 +8,6 @@ import xml.etree.ElementTree as ET
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
-from rclpy.duration import Duration
 
 from lifecycle_msgs.srv import GetState
 from action_msgs.msg import GoalStatus
@@ -18,6 +17,8 @@ from nav_msgs.msg import Path
 
 from nav2_msgs.action import NavigateToPose
 from opennav_coverage_msgs.action import ComputeCoveragePath
+from opennav_coverage_msgs.msg import Coordinates, Coordinate
+
 
 
 class CoverageRouteExecutor(Node):
@@ -32,7 +33,11 @@ class CoverageRouteExecutor(Node):
         super().__init__('coverage_route_executor')
 
         # Parameters
-        self.declare_parameter('osm_file', '')
+        self.declare_parameter(
+            'osm_file',
+            '/home/govind/civil_project/ardc_sim/install/opennav_coverage_demo/'
+            'share/opennav_coverage_demo/gazebo_map.osm'
+        )
         self.declare_parameter('frame_id', 'map')
         self.declare_parameter('min_goal_separation', 3.0)  # meters between waypoints
 
@@ -59,11 +64,7 @@ class CoverageRouteExecutor(Node):
         self.compute_cov_client = ActionClient(self, ComputeCoveragePath, 'compute_coverage_path')
         self.nav_to_pose_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
 
-        # Kick things off after everything has time to come up
-        self.timer = self.create_timer(3.0, self.start)
-        self.started = False
-
-    # ---------- OSM → polygon (same logic you used before, but self-contained) ----------
+    # ---------- OSM → polygon ----------
 
     def osm_to_field(self):
         """
@@ -118,7 +119,9 @@ class CoverageRouteExecutor(Node):
             elif role == 'right':
                 right_way_id = ref
 
-        self.get_logger().info(f"Lanelet relation: left way={left_way_id}, right way={right_way_id}")
+        self.get_logger().info(
+            f"Lanelet relation: left way={left_way_id}, right way={right_way_id}"
+        )
 
         if left_way_id not in ways or right_way_id not in ways:
             self.get_logger().error("Left or right way ID not found in ways dictionary!")
@@ -175,30 +178,49 @@ class CoverageRouteExecutor(Node):
     # ---------- Startup + state waiting ----------
 
     def wait_for_nav2_active(self, node_name='bt_navigator'):
-        self.get_logger().info(f"Waiting for {node_name} to become active...")
-        node_service = f'{node_name}/get_state'
-        state_client = self.create_client(GetState, node_service)
-        while not state_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info(f'{node_service} service not available, waiting...')
+        """
+        Block until the lifecycle node (bt_navigator, etc.) reports state == 'active'.
+
+        Safe here because we call it BEFORE rclpy.spin(node) in main().
+        """
+        service_name = f'/{node_name}/get_state'
+        self.get_logger().info(f"Waiting for lifecycle service {service_name} ...")
+
+        client = self.create_client(GetState, service_name)
+
+        # 1) Wait for the service itself to be ready
+        while not client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info(f"{service_name} not ready, waiting...")
+
+        self.get_logger().info(f"{service_name} is ready. Checking state...")
 
         req = GetState.Request()
         state = 'unknown'
+
+        # 2) Loop until state == 'active'
         while state != 'active':
-            future = state_client.call_async(req)
+            future = client.call_async(req)
+            # IMPORTANT: we are BEFORE rclpy.spin(node), so this is safe
             rclpy.spin_until_future_complete(self, future)
-            if future.result() is not None:
-                state = future.result().current_state.label
-                self.get_logger().info(f'{node_name} state: {state}')
+            result = future.result()
+            if result is None:
+                self.get_logger().warn("get_state returned None, retrying...")
+            else:
+                state = result.current_state.label
+                self.get_logger().info(f"{node_name} state: {state}")
+                if state == 'active':
+                    self.get_logger().info(f"{node_name} is active, Nav2 ready.")
+                    return
             time.sleep(1.0)
 
+
     def start(self):
-        if self.started:
-            return
-        self.started = True
-        self.timer.cancel()
+        self.get_logger().info("Start function called...............")
 
         # Make sure Nav2 BT navigator is active
         self.wait_for_nav2_active('bt_navigator')
+
+        self.get_logger().info("Nav2 is active, starting coverage...")
 
         # Build field polygon from OSM
         field = self.osm_to_field()
@@ -207,6 +229,7 @@ class CoverageRouteExecutor(Node):
             return
 
         self.publish_field_polygon(field)
+        self.get_logger().info("Publishing field polygon.....................")
 
         # Step 1: compute coverage path
         self.compute_and_execute_coverage(field)
@@ -221,14 +244,25 @@ class CoverageRouteExecutor(Node):
             return
 
         goal = ComputeCoveragePath.Goal()
-        goal.use_gml_file = False
-        goal.polygons_frame_id = self.frame_id
-        goal.polygons.append(self.field_to_polygon(field))
+
+        # What stages to compute
         goal.generate_headland = False
         goal.generate_route = True
         goal.generate_path = True
 
-        self.get_logger().info("Sending ComputeCoveragePath goal...")
+        # Field specification: we use polygons, not GML
+        goal.use_gml_file = False
+        goal.gml_field = ""    # not used
+        goal.frame_id = self.frame_id
+
+        # Build Coordinates[] from our field polygon
+        goal.polygons = self.build_polygons_from_field(field)
+
+        self.get_logger().info(
+            f"Sending ComputeCoveragePath goal with "
+            f"{len(goal.polygons[0].coordinates)} vertices..."
+        )
+
         future = self.compute_cov_client.send_goal_async(goal)
         rclpy.spin_until_future_complete(self, future)
         goal_handle = future.result()
@@ -247,7 +281,7 @@ class CoverageRouteExecutor(Node):
             return
 
         self.get_logger().info(
-            f"Coverage path computed in {result.planning_time:.3f}s: "
+            f"Coverage path computed in {result.planning_time.sec + result.planning_time.nanosec * 1e-9:.3f}s: "
             f"{len(result.nav_path.poses)} poses"
         )
 
@@ -261,6 +295,7 @@ class CoverageRouteExecutor(Node):
 
         # Execute each waypoint with NavigateToPose
         self.execute_waypoints(waypoints)
+
 
     def downsample_path(self, path: Path, min_dist: float):
         """Return a list of PoseStamped from path, separated by at least min_dist."""
@@ -293,6 +328,9 @@ class CoverageRouteExecutor(Node):
             return
 
         for i, pose in enumerate(waypoints):
+            pose.header.frame_id = self.frame_id  # Force 'map' (or whatever you set)
+            pose.header.stamp = self.get_clock().now().to_msg()
+            
             self.get_logger().info(
                 f"Sending NavigateToPose {i+1}/{len(waypoints)} to "
                 f"({pose.pose.position.x:.2f}, {pose.pose.position.y:.2f})"
@@ -310,7 +348,7 @@ class CoverageRouteExecutor(Node):
                 continue
 
             result_future = goal_handle.get_result_async()
-            # Wait for result (with timeout)
+            # Wait for result
             self.get_logger().info("Waiting for NavigateToPose result...")
             rclpy.spin_until_future_complete(self, result_future)
             result = result_future.result()
@@ -328,12 +366,42 @@ class CoverageRouteExecutor(Node):
                 )
 
         self.get_logger().info("Finished executing all coverage waypoints.")
+    
+    def build_polygons_from_field(self, field):
+        """
+        Convert our list [[x, y], ...] into opennav_coverage_msgs/Coordinates[].
+
+        We use a single outer polygon:
+        - polygons[0] = Coordinates for the outer boundary
+        - coordinates[i].axis1 = x, coordinates[i].axis2 = y
+        """
+        coords_msg = Coordinates()
+        coords_msg.coordinates = []
+
+        for x, y in field:
+            c = Coordinate()
+            c.axis1 = float(x)
+            c.axis2 = float(y)
+            coords_msg.coordinates.append(c)
+
+        # One outer polygon, no inner polygons
+        return [coords_msg]
+
 
 
 def main(args=None):
     rclpy.init(args=args)
     node = CoverageRouteExecutor()
+
+    # Wait for bt_navigator lifecycle node to be active
+    node.wait_for_nav2_active('bt_navigator')
+
+    # Kick off coverage execution once
+    node.start()
+
+    # Spin if you expect feedback or other callbacks during execution
     rclpy.spin(node)
+
     node.destroy_node()
     rclpy.shutdown()
 

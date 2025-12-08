@@ -25,9 +25,11 @@ def generate_launch_description():
     params_file = LaunchConfiguration('params_file')
 
     lifecycle_nodes = ['controller_server',
-                       'bt_navigator',
                        'velocity_smoother',
-                       'coverage_server']
+                       'coverage_server',
+                       'planner_server',
+                       'behavior_server',
+                       'bt_navigator']
 
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
@@ -59,44 +61,59 @@ def generate_launch_description():
         parameters=[configured_params, {'autostart': autostart}],
         remappings=remappings,
         output='screen')
+    
+    behavior_server_node = Node(
+        package='nav2_behaviors',
+        executable='behavior_server',
+        name='behavior_server',
+        output='screen',
+        parameters=[configured_params],
+        remappings=remappings)
 
     load_composable_nodes = LoadComposableNodes(
-        target_container='nav2_container',
-        composable_node_descriptions=[
-            ComposableNode(
-                package='nav2_controller',
-                plugin='nav2_controller::ControllerServer',
-                name='controller_server',
-                parameters=[configured_params],
-                remappings=remappings + [('cmd_vel', 'cmd_vel_nav')]),
-            ComposableNode(
-                package='opennav_coverage',
-                plugin='opennav_coverage::CoverageServer',
-                name='coverage_server',
-                parameters=[configured_params],
-                remappings=remappings),
-            ComposableNode(
-                package='backported_bt_navigator',
-                plugin='backported_bt_navigator::BtNavigator',
-                name='bt_navigator',
-                parameters=[configured_params],
-                remappings=remappings),
-            ComposableNode(
-                package='nav2_velocity_smoother',
-                plugin='nav2_velocity_smoother::VelocitySmoother',
-                name='velocity_smoother',
-                parameters=[configured_params],
-                remappings=remappings +
-                           [('cmd_vel', 'cmd_vel_nav'), ('cmd_vel_smoothed', 'cmd_vel')]),
-            ComposableNode(
-                package='nav2_lifecycle_manager',
-                plugin='nav2_lifecycle_manager::LifecycleManager',
-                name='lifecycle_manager_navigation',
-                parameters=[{'use_sim_time': use_sim_time,
-                             'autostart': autostart,
-                             'node_names': lifecycle_nodes}]),
+    target_container='nav2_container',
+    composable_node_descriptions=[
+        ComposableNode(
+            package='nav2_controller',
+            plugin='nav2_controller::ControllerServer',
+            name='controller_server',
+            parameters=[configured_params],
+            remappings=remappings + [('cmd_vel', 'cmd_vel_nav')]),
+        ComposableNode(
+            package='opennav_coverage',
+            plugin='opennav_coverage::CoverageServer',
+            name='coverage_server',
+            parameters=[configured_params],
+            remappings=remappings),
+        ComposableNode(
+            package='nav2_planner',
+            plugin='nav2_planner::PlannerServer',
+            name='planner_server',
+            parameters=[configured_params],
+            remappings=remappings),
+        ComposableNode(
+            package='backported_bt_navigator',
+            plugin='backported_bt_navigator::BtNavigator',
+            name='bt_navigator',
+            parameters=[configured_params],
+            remappings=remappings),
+        ComposableNode(
+            package='nav2_velocity_smoother',
+            plugin='nav2_velocity_smoother::VelocitySmoother',
+            name='velocity_smoother',
+            parameters=[configured_params],
+            remappings=remappings +
+                       [('cmd_vel', 'cmd_vel_nav'), ('cmd_vel_smoothed', 'cmd_vel')]),
+        ComposableNode(
+            package='nav2_lifecycle_manager',
+            plugin='nav2_lifecycle_manager::LifecycleManager',
+            name='lifecycle_manager_navigation',
+            parameters=[{'use_sim_time': use_sim_time,
+                         'autostart': autostart,
+                         'node_names': lifecycle_nodes}]),
         ],
     )
+
 
     # # Create the launch description and populate
     ld = LaunchDescription()
@@ -104,4 +121,5 @@ def generate_launch_description():
     ld.add_action(declare_params_file_cmd)
     ld.add_action(create_container)
     ld.add_action(load_composable_nodes)
+    ld.add_action(behavior_server_node)
     return ld
