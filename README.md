@@ -1,3 +1,9 @@
+# 9th December 2025
+Updated nav_params
+
+### TODO
+1. Experiment with nav servers and controllers to find a best way to follow path as well as avoid obstacles. (Need to test route-server + MPPI controller configuration)
+
 # 8th December 2025
 
 ### Update
