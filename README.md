@@ -1,3 +1,14 @@
+# 8th December 2025
+
+### Update
+Succesfully integrated navigate_to_pose action with coverage_planner. Added coverage_navigator.py file that gets the path coverage_planner node and calls navigate_to_pose to follow the path. 
+
+Not tuned nav params, so it doesnt follow the path properly yet, but navigate_to_pose call works.
+
+### TODO
+1. Tune Nav params
+2. Experiment with nav servers and controllers to find a best way to follow path as well as avoid obstacles. (Need to test route-server + MPPI controller configuration)
+
 ##  25 November 2025 
 
 ### Update
