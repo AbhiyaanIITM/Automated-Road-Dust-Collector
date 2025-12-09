@@ -218,7 +218,7 @@ class CoverageRouteExecutor(Node):
         self.get_logger().info("Start function called...............")
 
         # Make sure Nav2 BT navigator is active
-        self.wait_for_nav2_active('bt_navigator')
+        # self.wait_for_nav2_active('bt_navigator')
 
         self.get_logger().info("Nav2 is active, starting coverage...")
 
@@ -328,7 +328,7 @@ class CoverageRouteExecutor(Node):
             return
 
         for i, pose in enumerate(waypoints):
-            pose.header.frame_id = self.frame_id  # Force 'map' (or whatever you set)
+            pose.header.frame_id = self.frame_id  
             pose.header.stamp = self.get_clock().now().to_msg()
             
             self.get_logger().info(

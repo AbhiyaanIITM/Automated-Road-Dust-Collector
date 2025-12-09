@@ -221,7 +221,7 @@ def generate_launch_description():
 
     # Gazebo (server + client)
     ld.add_action(start_gazebo_server_cmd)
-    # ld.add_action(start_gazebo_client_cmd)
+    ld.add_action(start_gazebo_client_cmd)
 
     # Robot + tools (Uncommented all actions)
     ld.add_action(spawn_model_node)
